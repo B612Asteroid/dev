@@ -1,0 +1,54 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+	
+	id "com.moowork.node" version "1.3.1"
+
+}
+
+apply plugin: "com.moowork.node"
+
+group = 'com.song.dev'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	
+	// MyBatis
+  	compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")
+  	compile('org.springframework.boot:spring-boot-starter-jdbc')
+  	compile('mysql:mysql-connector-java')
+  	
+  	//Spring boot jpa
+  	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+}
+
+
+def webappDir = "$projectDir/frontend/my-app"
+
+task appNpmInstall(type : NpmTask) {
+	workingDir = file("${webappDir}")
+	args = ["run", "build"]
+}
+
+task copyWebApp(type : Copy) {
+	from 'frontend/my-app/build'
+	into "build/resources/main/static"
+}
+
+copyWebApp.dependsOn(appNpmInstall)
+compileJava.dependsOn(copyWebApp)
+
+test {
+	useJUnitPlatform()
+}
