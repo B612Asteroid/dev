@@ -29,8 +29,20 @@ dependencies {
   	compile('org.springframework.boot:spring-boot-starter-jdbc')
   	compile('mysql:mysql-connector-java')
   	
+  	// slf4j
+	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+  	
   	//Spring boot jpa
   	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+  	
+	
+	// https://mvnrepository.com/artifact/commons-logging/commons-logging
+	compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+	compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.13'
+	
+  	// jsoup HTML parser library @ https://jsoup.org/
+	compile 'org.jsoup:jsoup:1.13.1'
 }
 
 
