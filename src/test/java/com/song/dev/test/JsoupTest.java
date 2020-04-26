@@ -20,7 +20,7 @@ class JsoupTest {
 	private static final Logger logger = LoggerFactory.getLogger(JsoupTest.class);
 	
 	private static final String URL = "https://kr.betsapi.com/l/13988/LOL--LCK-Spring"; 
-	
+	 
 	@Test
 	public void test() {
 		try {
