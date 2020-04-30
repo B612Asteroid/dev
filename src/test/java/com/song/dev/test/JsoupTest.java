@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.song.dev.util.ArrayUtil;
+
 class JsoupTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(JsoupTest.class);
@@ -50,7 +52,7 @@ class JsoupTest {
 				list.add(map);
 			}
 			
-			logger.debug(list.toString());
+			ArrayUtil.printList(list);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
