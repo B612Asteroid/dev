@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.song.dev.LCK.LCKMapper">
+
+	<sql id="lckColumns">
+		(
+			winteamid, 
+			loseteamid, 
+			gamedate,
+			seasonid,
+			result
+		)
+	</sql>
+	
+	<sql id="lckValueColumns">
+		(
+			#{lck.winTeam.id}, 
+			#{lck.loseTeam.id}, 
+			#{lck.gameDate},
+			#{lck.season.id},
+			#{lck.result}
+		)
+	</sql>
+
+
+    <select id="findAllLCKs" resultType="java.util.List">
+        SELECT * FROM LCK;
+    </select>
+    
+    <!--  insert LCK -->
+	<insert id="insertLCK" useGeneratedKeys="true" keyProperty="id" parameterType="com.song.dev.LCK.LCKBean">
+		INSERT INTO LCK
+		<include refid="lckColumns"></include>
+		INTO
+		<include refid="lckValueColumns"></include>
+	</insert>
+	
+	<!--  insert Many LCK -->
+	<insert id="insertLCKs" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+		INSERT INTO LCK
+			<include refid="lckColumns"></include>
+		VALUES
+		<foreach collection="list" item="lck" separator=",">
+			<include refid="lckValueColumns"></include>
+		</foreach>
+	</insert>
+</mapper>

@@ -24,6 +24,8 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
 	// MyBatis
   	compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")
   	compile('org.springframework.boot:spring-boot-starter-jdbc')
@@ -33,7 +35,7 @@ dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
   	
   	//Spring boot jpa
-  	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+  	//compile('org.springframework.boot:spring-boot-starter-data-jpa')
   	
 	
 	// https://mvnrepository.com/artifact/commons-logging/commons-logging
@@ -43,6 +45,10 @@ dependencies {
 	
   	// jsoup HTML parser library @ https://jsoup.org/
 	compile 'org.jsoup:jsoup:1.13.1'
+	
+	// lombok
+	compile 'org.projectlombok:lombok:1.16.20'
+
 }
 
 
@@ -61,6 +67,9 @@ task copyWebApp(type : Copy) {
 copyWebApp.dependsOn(appNpmInstall)
 compileJava.dependsOn(copyWebApp)
 
+
+
 test {
 	useJUnitPlatform()
+	
 }

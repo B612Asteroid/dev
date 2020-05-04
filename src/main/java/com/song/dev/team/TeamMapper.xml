@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.song.dev.team.TeamMapper">
+    <select id="findAllTeams" resultType="java.util.List">
+        SELECT * FROM team;
+    </select>
+    
+    <select id="findTeamsByName" resultType="com.song.dev.team.TeamBean" parameterType="java.util.List">
+		SELECT *
+		FROM   team
+		WHERE  1 = 1
+		AND    teamname IN
+		<foreach collection="list" item="teamName" separator="," open="(" close=")">
+			#{teamName}
+		</foreach>
+	</select>
+    
+    <!--  insert team -->
+	<insert id="insertTeam" useGeneratedKeys="true" keyProperty="id" parameterType="com.song.dev.team.TeamBean">
+		INSERT INTO TEAM
+		(teamname, createDate, updateDate)
+		VALUES
+		(#{teamName}, NOW(), NOW())
+	</insert>
+	
+	<!--  insert teams -->
+	<insert id="insertTeams" parameterType="java.util.List">
+		INSERT INTO TEAM
+		(teamname, createDate, updateDate)
+		VALUES
+		<foreach collection="list" item="team" separator=",">
+			(#{team.teamName}, NOW(), NOW())
+		</foreach>
+		
+	</insert>
+	
+	
+</mapper>

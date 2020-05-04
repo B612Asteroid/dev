@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.song.dev.season.SeasonMapper">
+
+	<sql id="seasonColumns">
+		seasonyear, 
+		season,
+		league
+	</sql>
+	
+	<sql id="seasonValueColumns">
+		#{seasonYear}, 
+		#{season},
+		#{league}
+	</sql>
+	
+	<!-- select Season -->
+	<select id="findSeason" parameterType="com.song.dev.season.SeasonBean" resultType="com.song.dev.season.SeasonBean">
+		SELECT *
+		FROM   SEASON
+		WHERE  1 = 1 
+		<if test="seasonYear != null">
+			AND seasonyear = #{seasonYear}
+		</if>
+		<if test="season != null">
+			AND season = #{season}
+		</if>
+		<if test="league != null">
+			AND league = #{league}
+		</if>
+		LIMIT 1;
+	</select>
+
+    <!--  insert Season -->
+	<insert id="insertSeason" useGeneratedKeys="true" keyProperty="id" parameterType="com.song.dev.season.SeasonBean">
+		INSERT INTO SEASON
+		<include refid="seasonColumns"></include>
+		INTO
+		<include refid="seasonValueColumns"></include>
+	</insert>
+	
+	<!--  insert Many LCK -->
+	<insert id="insertSeasons" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List">
+		INSERT INTO SEASON
+			<include refid="seasonColumns"></include>
+		VALUES
+		<foreach collection="list" item="season" separator=",">
+			<include refid="seasonValueColumns"></include>
+		</foreach>
+	</insert>
+</mapper>

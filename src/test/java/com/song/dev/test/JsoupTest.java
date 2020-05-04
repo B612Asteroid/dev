@@ -22,37 +22,43 @@ class JsoupTest {
 	private static final Logger logger = LoggerFactory.getLogger(JsoupTest.class);
 	
 	private static final String URL = "https://kr.betsapi.com/l/13988/LOL--LCK-Spring"; 
-	 
+	
 	@Test
 	public void test() {
 		try {
-			Document doc = Jsoup.connect(URL).get();
-			//logger.debug(doc.toString());
-			
-			// #. tbody를 끌고 왔으니 이걸 JSON으로 변경해보
-			Elements trs = doc.select("tr");
-			
-			List<Map<String, Object>> list = new ArrayList<>();
-			for (Element tr : trs) {
+			for (int i = 1; i <= 4; i++) {
+				Document doc = Jsoup.connect(URL + "/p." + i).get();
+				//logger.debug(doc.toString());
 				
-				Node child = tr.childNode(0);
-				if ("th".equals(child.nodeName())) {
-					continue;
-				};
+				// #. tbody를 끌고 왔으니 이걸 JSON으로 변경해보
+				Elements trs = doc.select("tr");
 				
-				Map<String, Object> map = new HashMap<String, Object>();
+				List<Map<String, Object>> list = new ArrayList<>();
+				for (Element tr : trs) {
+					
+					Node child = tr.childNode(0);
+					if ("th".equals(child.nodeName())) {
+						continue;
+					};
+					
+					Map<String, Object> map = new HashMap<String, Object>();
+					
+					String dateStr = getDate(tr);
+					List<String> teams = getTeams(tr);
+					String result = getResult(tr);
+					
+					if(dateStr.startsWith("2019")) {
+						break;
+					}
+					
+					map.put("date", dateStr);
+					map.put("team", teams);
+					map.put("result", result);
+					list.add(map);
+				}
 				
-				String dateStr = getDate(tr);
-				List<String> teams = getTeams(tr);
-				String result = getResult(tr);
-				
-				map.put("date", dateStr);
-				map.put("team", teams);
-				map.put("result", result);
-				list.add(map);
+				ArrayUtil.printList(list);	
 			}
-			
-			ArrayUtil.printList(list);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
