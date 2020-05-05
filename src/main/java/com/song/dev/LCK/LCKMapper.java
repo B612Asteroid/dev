@@ -1,6 +1,7 @@
 package com.song.dev.LCK;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,4 +29,9 @@ public interface LCKMapper {
 	 * find All LCK Matches
 	 */
 	public List<LCKBean> findAllLCKs();
+	
+	/**
+	 * find LCK Matches By SeasonYear
+	 */
+	public List<LCKBean> findLCKBySeason(Map<String, Object> paramMap);
 }

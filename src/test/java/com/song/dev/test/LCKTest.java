@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ import com.song.dev.season.SeasonMapper;
 import com.song.dev.team.TeamBean;
 import com.song.dev.team.TeamMapper;
 
+import ch.qos.logback.classic.Logger;
+
 @SpringBootTest
 public class LCKTest {
 	
@@ -30,6 +33,7 @@ public class LCKTest {
 	
 	@Autowired
 	private LCKMapper lckMapper;
+	
 	
 	
 	@Test
@@ -51,21 +55,37 @@ public class LCKTest {
 				String result = (String)map.get("result");
 				List<String> teamStrs = (List<String>)map.get("team");
 				
-				List<TeamBean> teams = teamMapper.findTeamsByName(teamStrs);
-				TeamBean winTeam = teams.get(0);
-				TeamBean loseTeam = teams.get(1);
+				// #. 1-2, 0-2 방식을 치환해서 2-0, 2-1 형식으로 변환
+				int winIdx = 0;
+				int loseIdx = 1;
 				
-				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				String[] temp = result.split("-");
+				
+				if (temp.length != 1) {
+					int winScore = Integer.parseInt(temp[0]);
+					int loseScore = Integer.parseInt(temp[1]);
+					
+					if (winScore < loseScore) {
+						result = loseScore + "-" + winScore;
+						winIdx = 1;
+						loseIdx = 0;
+					}
+				}
+				
+				List<TeamBean> teams = teamMapper.findTeamsByName(teamStrs);
+				TeamBean winTeam = teams.get(winIdx);
+				TeamBean loseTeam = teams.get(loseIdx);
+				
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
 				Date date = format.parse(dateStr);
 				
-				LCKBean lck = LCKBean.builder()
-					.winTeam(winTeam)
-					.loseTeam(loseTeam)
-					.gameDate(new Timestamp(date.getTime()))
-					.season(findSeason)
-					.result(result)
-					.build();
-				
+				LCKBean lck = new LCKBean();
+				lck.setWinTeam(winTeam);
+				lck.setLoseTeam(loseTeam);
+				lck.setGameDate(new Timestamp(date.getTime()));
+				lck.setSeason(findSeason);
+				lck.setResult(result);
+				    
 				lcks.add(lck);
 			}
 			
@@ -74,7 +94,21 @@ public class LCKTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	@Test
+	public void getLckListTest() {
+		try {
+			// TODO Auto-generated method stub
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("seasonYear", 2020);
+			paramMap.put("season", "Spring");
+			
+			List<LCKBean> list = lckMapper.findLCKBySeason(paramMap);
+			System.out.println(list);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 }

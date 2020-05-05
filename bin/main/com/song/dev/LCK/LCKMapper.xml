@@ -4,6 +4,7 @@
  
 <mapper namespace="com.song.dev.LCK.LCKMapper">
 
+	<!-- sql 조립 -->
 	<sql id="lckColumns">
 		(
 			winteamid, 
@@ -24,9 +25,46 @@
 		)
 	</sql>
 
+	<!-- ResultMap 생성 -->
+	<resultMap type="lckBean" id="lckMatchResultMap">
+		<id property="id" column="id"/>
+		<result property="result" column="result"/>
+		<result property="gameDate" column="gamedate"/>
+		
+		<association property="winTeam" javaType="teamBean">
+			<id property="id" column="win.id" />
+			<result property="teamName" column="winTeamName"/>
+		</association>
+		
+		<association property="loseTeam" javaType="teamBean">
+			<id property="id" column="lose.id" />
+			<result property="teamName" column="loseTeamName"/>
+		</association>
+		
+		<association property="season" javaType="seasonBean">
+			<id property="id" column="season.id" />
+			<result property="season" column="season"/>
+		</association>	
+	</resultMap>
 
-    <select id="findAllLCKs" resultType="java.util.List">
+    <select id="findAllLCKs" resultType="lckBean">
         SELECT * FROM LCK;
+    </select>
+    
+    <select id="findLCKBySeason" parameterType="java.util.Map" resultMap="lckMatchResultMap">
+    	SELECT l.id AS id, 
+    		   win.teamname AS winTeamName, 
+    		   lose.teamname AS loseTeamName, 
+    		   l.gamedate, l.RESULT AS result, 
+    		   s.season AS season
+		FROM   lck l , season s, team win, team lose
+		WHERE  1 = 1
+		AND    l.winteamid = win.id
+		AND    l.loseteamid = lose.id 
+		AND    l.seasonid = s.id
+		AND    s.seasonyear = #{seasonYear}
+		AND    s.season = #{season}
+		ORDER BY l.id;
     </select>
     
     <!--  insert LCK -->

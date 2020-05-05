@@ -57,7 +57,7 @@ class JsoupTest {
 					list.add(map);
 				}
 				
-				ArrayUtil.printList(list);	
+				//ArrayUtil.printList(list);	
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -74,9 +74,11 @@ class JsoupTest {
 	
 	private List<String> getTeams(Element element) {
 		Elements teamAnycs = element.getElementsByAttributeValueStarting("href", "/t");
+		logger.info(teamAnycs.text());
 		List<String> teams = new ArrayList<>();
 		for (Element anyc : teamAnycs) {
 			String team = anyc.text();
+			logger.info(team);
 			teams.add(team);
 		}
 		

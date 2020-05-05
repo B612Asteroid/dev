@@ -15,6 +15,11 @@
 		<foreach collection="list" item="teamName" separator="," open="(" close=")">
 			#{teamName}
 		</foreach>
+		ORDER BY FIELD(teamname, 
+		<foreach collection="list" item="teamName" separator=",">
+			#{teamName}
+		</foreach>
+		)
 	</select>
     
     <!--  insert team -->
