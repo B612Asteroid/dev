@@ -16,23 +16,25 @@ class MainComponent extends Component {
     }
 
     getApi = function () {
-        axios.get("http://localhost:8080/api/hello")
+        axios.get("http://localhost/lck/getLck/2020/Spring")
             .then(function(response) {
-                console.log(response);
+                console.log(response.data);
+                /*
                 this.setState({
-                    message : response.data.message
+                    message : response.data
                 });
+                */
             }.bind(this))
             .catch(function(response) {
                 console.log(response);
             });
     }
-
      render() {
+
           return(
               <div>
                <div> Main 페이지 </div>
-               <div>{this.state.message}</div> 
+               <div>{/*this.state.message*/}</div> 
              </div>
         ) 
     } 

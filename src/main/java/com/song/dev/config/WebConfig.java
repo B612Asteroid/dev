@@ -12,6 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
 		// TODO Auto-generated method stub
 		registry.addMapping("/api/**")
 		.allowedOrigins("http://localhost:3000");
+		
+		registry.addMapping("/lck/**")
+		.allowedOrigins("http://localhost:3000");
 	}
 	
 	

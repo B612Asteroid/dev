@@ -25,6 +25,7 @@ public class LCKRestController {
 	@GetMapping("/getLck/{seasonYear}/{season}")
 	public @ResponseBody List<LCKBean> getLckMatches(
 			@PathVariable("seasonYear") int seasonYear, @PathVariable("season") String season) {
+		
 		return lckService.getLCKs(seasonYear, season);
 	}
 }
