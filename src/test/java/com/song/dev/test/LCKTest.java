@@ -48,7 +48,7 @@ public class LCKTest {
 			// #. URL 파싱한거 가져옴
 			JsoupParsor parsor = new JsoupParsor();
 			List<Map<String, Object>> jsonLcks = parsor.parseLck();
-			
+			System.out.println(jsonLcks);
 			List<LCKBean> lcks = new ArrayList<>();
 			for (Map<String, Object> map : jsonLcks) {
 				String dateStr = (String)map.get("date");

@@ -1,6 +1,5 @@
 package com.song.dev.test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,7 +56,7 @@ public class TeamTest {
 			List<TeamBean> teams = getInsertTeams(teamset);
 			logger.info("Before insert == : " + teams.get(0).getId());
 			
-			//teams = teamService.insertTeams(teams);
+			teams = teamService.insertTeams();
 			logger.info("after insert == : " + teams.toString());
 			
 		} catch (Exception e) {

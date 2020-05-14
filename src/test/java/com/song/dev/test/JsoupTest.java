@@ -31,7 +31,8 @@ class JsoupTest {
 				//logger.debug(doc.toString());
 				
 				// #. tbody를 끌고 왔으니 이걸 JSON으로 변경해보
-				Elements trs = doc.select("tr");
+				Elements tbody = doc.select("tbody");
+				Elements trs = tbody.select("tr");
 				
 				List<Map<String, Object>> list = new ArrayList<>();
 				for (Element tr : trs) {

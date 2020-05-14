@@ -25,7 +25,7 @@ public class JsoupParsor {
 	
 	/** logger */
 	private static final Logger logger = LoggerFactory.getLogger(JsoupParsor.class);
-	private static final String URL = "https://kr.betsapi.com/l/13988/LOL--LCK-Spring"; 
+	private static final String URL = "https://kr.betsapi.com/le/13988/LOL--LCK-Spring"; 
 	 
 	/**
 	 * LCK 경기결과를 파싱해서 JSON으로 반환함.
@@ -40,8 +40,9 @@ public class JsoupParsor {
 		for (int i = 1; i <= 4; i++) {
 			Document doc = Jsoup.connect(URL + "/p." + i).get();
 			
-			// #. tbody를 끌고 왔으니 이걸 JSON으로 변경해보자
-			Elements trs = doc.select("tr");
+			// #. tbody를 끌고 왔으니 이걸 JSON으로 변경해보
+			Elements tbody = doc.select("tbody");
+			Elements trs = tbody.select("tr");
 			
 			List<Map<String, Object>> list = new ArrayList<>();
 			for (Element tr : trs) {
